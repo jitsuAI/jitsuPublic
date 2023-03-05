@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  jitsuServer:
+    image: public.ecr.aws/w1g9s3d2/jitsuai-public/jec-instance:latest
+    container_name: jitsuServer
+    restart: always
+    ulimits:
+      nofile: 1048576
+      memlock: -1
+      core: 0
+    ports:
+      - "50051:50051"
+    environment:
+      - JITSU_SWAP_PATH=/tmp
+      - JITSU_SERVER_BUILD=Release
+      - CONTAINER_NAME=jitsuServer
+      - TERMINFO=/usr/share/terminfo # To be able to run jitsu_top.py from within the container
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp=unconfined
+    volumes:
+      - type: bind
+        source: /home/ec2-user/jitsuServer.json
+        target: /opt/jitsu/jitsuServer.json
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/jitsu/logs/:/opt/jitsu/logs/

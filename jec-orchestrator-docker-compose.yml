@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+  jitsuOrchestrator:
+    image: public.ecr.aws/w1g9s3d2/jitsuai-public/jec-orchestrator:latest
+    container_name: jitsuOrchestrator
+    restart: always
+    environment:
+      - GRPC_SERVER_HOST=${JDBCSERVER1_GRPC_HOST}
+      - GRPC_SERVER_PORT=50051
+      - HIVE_SERVER2_IDLE_SESSION_TIMEOUT_SECONDS=${HIVE_SERVER2_IDLE_SESSION_TIMEOUT_SECONDS}
+      - JDBC_SERVER_TRANSPORT_MODE=http
+      - JDBC_AUTH=NOOP
+      - CONTAINER_NAME=jdbcServer1
+      - JDBC_PORT=10000
+      - DASHBOARD_PORT=8080
+      - JDBC_PASSWORD=infinite-scale
+      - GRPC_CONNECTION_MAX_RETRIES=300
+      - GRPC_CONNECTION_RETRY_SLEEP=1000
+    ports: 
+      - "10000:10000"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

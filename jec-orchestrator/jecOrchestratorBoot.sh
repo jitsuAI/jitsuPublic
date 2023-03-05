@@ -15,8 +15,9 @@ sudo systemctl enable docker.service
 sudo systemctl start docker.service
 sudo systemctl status docker.service
 
-wget https://raw.githubusercontent.com/jitsuAI/jitsuPublic/main/jec-orchestrator-docker-compose.yml docker-compose.yml
+curl https://raw.githubusercontent.com/jitsuAI/jitsuPublic/main/jec-orchestrator/docker-compose.yml > docker-compose.yml
+curl https://raw.githubusercontent.com/jitsuAI/jitsuPublic/main/jec-orchestrator/.env > .env
 
 aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/w1g9s3d2
 
-docker-compose --env-file .env up -d -f jec-orchestrator-docker-compose
+docker-compose --env-file .env up -d
